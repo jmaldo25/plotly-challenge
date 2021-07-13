@@ -42,3 +42,27 @@ function makeBar(sample){
         Plotly.newPlot('bar', [traceBar], layout);
     });
 };
+
+// Creating Bubble Chart of data
+function makeBubble(sample){
+    d3.json(filePath).then(function(data){
+        var samples = data['samples'];
+        var selectedSamples = samples.filter(bug=>bug['id'] ==sample) [0];
+        var traceBubble={
+            x: selectedSamples['otu_ids'],
+            y: selectedSamples['sample_values'],
+            mode: 'markers',
+            text: selectedSamples['otu_labels'],
+            marker: {
+                size: selectedSamples['sample_values'].map(sample_value=>sample_value/2),
+                color: selectedSamples['otu_ids'],
+                colorscale: 'Earth'
+            }
+        };
+        var layout ={
+            title: "Microbe Abundance",
+            xaxis: { title: "OTU ID" }
+        };
+        Plotly.newPlot('bubble', [traceBubble], layout);
+    });
+};
