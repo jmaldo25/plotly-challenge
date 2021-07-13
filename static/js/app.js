@@ -66,3 +66,17 @@ function makeBubble(sample){
         Plotly.newPlot('bubble', [traceBubble], layout);
     });
 };
+
+// Building metadata table
+function makeTable(sample){
+    d3.json(filePath).then(function(data){
+        var samples = data['metadata'];
+        var selectedSamples = samples.filter(bio=>bio['id'] ==sample) [0];
+        var panel = d3.select('#sample-metadata');
+        //console.log(Object.entries(selectedSamples));  // Test to ensure data was read
+        panel.html('');
+        Object.entries(selectedSamples).forEach(([sample_key, sample_value])=>{
+            panel.append('h5').text(`${sample_key}: ${sample_value}`)
+        });
+    });
+};
