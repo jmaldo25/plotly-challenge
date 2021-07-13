@@ -80,3 +80,49 @@ function makeTable(sample){
         });
     });
 };
+
+// Bonus: Creating Gauge Chart for weekly washing frequency
+// Adapted from https://plot.ly/javascript/gauge-charts/
+
+function makeGauge(sample){
+	d3.json(filePath).then(function(data){
+		var metadata = data.metadata;
+		var values = metadata.filter(val=>val['id'] ==sample);
+		var freqValue = values[0].wfreq;
+
+	var gPlot = [{
+		domain: { x: [0, 1], y: [0, 1] },
+    	type: "indicator",
+		mode: "gauge+number",
+		delta: { reference: 0 },
+		title: { text: "<b>Belly Button Washing Frequency<b><br> Scrubs per Week", font: { size: 20 } },
+		value: freqValue,
+    	gauge: {
+        	axis: { 
+				range: [0, 9], 
+				tickwidth: 1, 
+				tickvals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+				ticks: ''},
+			borderwidth: 0,
+			bar: { color: "darkred" },
+        	steps: [
+            	{ range: [0, 1], color: '#FEFAEF' },
+            	{ range: [1, 2], color: "F1EEE4" },
+            	{ range: [2, 3], color: "DEE0D1" },
+            	{ range: [3, 4], color: "E9EDCC" },
+            	{ range: [4, 5], color: "E0EE75" }, 
+            	{ range: [5, 6], color: "A8BE5C" },
+            	{ range: [6, 7], color: "6CB93E" },
+            	{ range: [7, 8], color: "5EA931" },
+				{ range: [8, 9], color: "4B8D23" } ],
+      } }]; 
+  
+  var layout = {
+    width: 500,
+    height: 400,
+    margin: { t: 25, r: 25, l: 25, b: 25 },
+ };
+  
+  Plotly.newPlot('gauge', gPlot, layout);
+});
+};
